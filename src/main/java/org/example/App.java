@@ -17,15 +17,24 @@ public class App
     public static void main( String[] args ) {
 
         System.out.println( "Hello World!" );
+        //*
 
         //Connection miConexion = AdministradorConexiones.obtenerConexion();
-        Auto auto =
-            new Auto("CCCCC", "Blanco", 2025, 897, Marca.Honda, "Prius");
+        //Auto auto = new Auto("CCCCC", "Blanco", 2025, 897, Marca.Honda, "Prius");
 
         AutoDAO autoDAO = new AutoDAO();
-        AutoDAO.insertarAuto(auto);
+        //AutoDAO.insertarAuto(auto);
+
 
         List<Auto> miLista=autoDAO.findAll();
+
+
+        Auto autoAModificar =
+            new Auto(10,"BBBB", "Rojo", 2024, 111, Marca.Honda, "Prius");
+        autoDAO.update(autoAModificar);
+        autoDAO.delete(11);
+
+        System.out.println("Auto encontrado: " + autoDAO.getById(10).toString());
 
         //Recorro la lista de autos
         if (!miLista.isEmpty()){
@@ -33,6 +42,5 @@ public class App
                 System.out.println(a.toString());
             }
         }
-
     }
 }

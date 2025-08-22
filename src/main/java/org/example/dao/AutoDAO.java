@@ -14,6 +14,65 @@ public class AutoDAO {
 
   private static Connection conn;
 
+  public void update(Auto auto){
+    //Establecer la conexion
+
+    //solo si el auto exite lo modifico
+    if (this.existsById(auto.getIdAuto())){
+
+      String sql = "UPDATE autos SET " +
+          "patente = '" + auto.getPatente() + "', " +
+          "color = '" + auto.getColor() + "', " +
+          "anio = " + auto.getAnio() + ", " +
+          "kilometraje = " + auto.getKilometraje() + ", " +
+          "marca = '" + auto.getMarca() + "', " +
+          "modelo = '" + auto.getModelo() + "' " +
+          "WHERE idAuto = " + auto.getIdAuto();
+      conn = AdministradorConexiones.obtenerConexion();
+
+
+      //Creao un statementn
+      Statement st = null;
+
+      try {
+        st = conn.createStatement();
+        st.execute(sql);
+        st.close();
+        conn.close();
+      } catch (SQLException e) {
+        System.out.println("Error al crear el statement");
+        throw new RuntimeException(e);
+      }
+    }
+  }
+
+  public boolean existsById(int id){
+    conn = AdministradorConexiones.obtenerConexion();
+
+    String sql= "SELECT * FROM autos WHERE idAuto = " + id;
+
+    Statement st = null;
+    ResultSet rs = null;
+    boolean existe = false;
+    try {
+      st = conn.createStatement(); //CREO STATEMENT
+      rs = st.executeQuery(sql);  //EJECUTO CONSULTA
+      //SI LA CONSULTA DEVUELVE AL MENOS UN REGISTRO, EXISTE
+
+      if (rs.next()){
+        existe=true;
+      }
+
+      rs.close();
+      st.close();
+      conn.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return existe;
+
+  }
+
   public static void insertarAuto(Auto auto) {
 
     //Establecer la conexion a la BD
@@ -96,4 +155,57 @@ public class AutoDAO {
     return listaAutos;
   }
 
+  public void delete (int idauto){
+    conn = AdministradorConexiones.obtenerConexion();
+
+    String sql = "DELETE FROM autos WHERE idAuto = " + idauto;
+    Statement st = null;
+
+    try {
+      st = conn.createStatement();
+      st.execute(sql);
+      st.close();
+      conn.close();
+
+    } catch (SQLException e) {
+      System.out.println("Error al crear el statement");
+      throw new RuntimeException(e);
+    }
+  }
+
+  public Auto getById(int id){
+    conn = AdministradorConexiones.obtenerConexion();
+
+    String sql= "SELECT * FROM autos WHERE idAuto = " + id;
+
+    Statement st = null;
+    ResultSet rs = null;
+    Auto auto = new Auto();
+
+    try {
+      st = conn.createStatement(); //CREO STATEMENT
+      rs = st.executeQuery(sql);  //EJECUTO CONSULTA
+      //SI LA CONSULTA DEVUELVE AL MENOS UN REGISTRO, EXISTE
+
+      if (rs.next()){
+        //Asigno datos al auto
+        auto.setIdAuto(rs.getInt("idAuto"));
+        auto.setPatente((rs.getString("patente")));
+        auto.setColor(rs.getString("color"));
+        auto.setMarca(Marca.valueOf(rs.getString("marca")));
+        auto.setAnio(rs.getInt("anio"));
+        auto.setKilometraje(rs.getInt("kilometraje"));
+        auto.setModelo(rs.getString("modelo"));
+
+      }
+
+      rs.close();
+      st.close();
+      conn.close();
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return auto;
+
+  }
 }
