@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.configuracion.AdministradorConexiones;
 import org.example.dao.AutoDAO;
+import org.example.dao.AutoImpl;
 import org.example.entities.Auto;
 import org.example.entities.Marca;
 
@@ -42,5 +43,11 @@ public class App
                 System.out.println(a.toString());
             }
         }
+
+      System.out.println("==========Agregando con DAO Impl");
+
+        Auto autotest = new Auto("ZZZZ", "Amarillo", 2025, 150000, Marca.Ford, "Ranger");
+      AutoImpl autoImpl = new AutoImpl();
+      autoImpl.insert(autotest);
     }
 }

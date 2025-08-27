@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3b046b6-f909-4fd4-ae4a-749f0bbd459d" name="Changes" comment="ConexionBD - insertar y mostrar">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/interfaces/AdmConexion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/interfaces/DAO.java" afterDir="false" />
+    <list default="true" id="e3b046b6-f909-4fd4-ae4a-749f0bbd459d" name="Changes" comment="Conexiones, DAO, Interfaces genericas">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/Auto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/Auto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,11 +73,19 @@
       <option name="project" value="LOCAL" />
       <updated>1755732192445</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Conexiones, DAO, Interfaces genericas">
+      <created>1755821319654</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1755821319655</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="ConexionBD - insertar y mostrar" />
-    <option name="LAST_COMMIT_MESSAGE" value="ConexionBD - insertar y mostrar" />
+    <MESSAGE value="Conexiones, DAO, Interfaces genericas" />
+    <option name="LAST_COMMIT_MESSAGE" value="Conexiones, DAO, Interfaces genericas" />
   </component>
 </project>
