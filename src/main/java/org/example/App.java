@@ -17,37 +17,36 @@ public class App
 {
     public static void main( String[] args ) {
 
-        System.out.println( "Hello World!" );
-        //*
+        AutoImpl autoimpl = new AutoImpl();
 
-        //Connection miConexion = AdministradorConexiones.obtenerConexion();
-        //Auto auto = new Auto("CCCCC", "Blanco", 2025, 897, Marca.Honda, "Prius");
+        // === Insertar Autos
+        Auto auto1 = new Auto("ABC123", "Rojo", 2020, 25000, Marca.Toyota, "Corolla");
+        autoimpl.insert(auto1);
 
-        AutoDAO autoDAO = new AutoDAO();
-        //AutoDAO.insertarAuto(auto);
-
-
-        List<Auto> miLista=autoDAO.findAll();
-
-
-        Auto autoAModificar =
-            new Auto(10,"BBBB", "Rojo", 2024, 111, Marca.Honda, "Prius");
-        autoDAO.update(autoAModificar);
-        autoDAO.delete(11);
-
-        System.out.println("Auto encontrado: " + autoDAO.getById(10).toString());
-
-        //Recorro la lista de autos
-        if (!miLista.isEmpty()){
-            for (Auto a : miLista){
-                System.out.println(a.toString());
-            }
+        // === Lista de autos
+        System.out.println("Lista de autos en la concesionaria:");
+        List<Auto> autos = autoimpl.getAll();
+        for (Auto a : autos) {
+            System.out.println(a);
         }
 
-      System.out.println("==========Agregando con DAO Impl");
 
-        Auto autotest = new Auto("ZZZZ", "Amarillo", 2025, 150000, Marca.Ford, "Ranger");
-      AutoImpl autoImpl = new AutoImpl();
-      autoImpl.insert(autotest);
+        // === Buscar un auto por ID
+        int idBuscado = auto1.getIdAuto(); // recién insertado
+        Auto auto = autoimpl.getById(idBuscado);
+        System.out.println("Auto encontrado con id " + idBuscado + ": " + auto);
+
+        // === Modificar un auto
+        auto.setColor("Negro");
+        autoimpl.update(auto);
+        System.out.println("Auto actualizado: " + autoimpl.getById(auto.getIdAuto()));
+
+        // === Eliminar un auto
+        autoimpl.delete(auto.getIdAuto());
+        System.out.println("Después de eliminar, autos en concesionaria:");
+        autos = autoimpl.getAll();
+        for (Auto a : autos) {
+            System.out.println(a);
+        }
     }
 }

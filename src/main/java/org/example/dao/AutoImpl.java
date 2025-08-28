@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
-  private Connection conn = null;
+  private Connection conn;
 
   private static final String SQL_INSERT = "INSERT INTO autos (patente,color,anio,kilometraje,marca,modelo) " +
       "VALUES(?,?,?,?,?,?)";
@@ -27,29 +27,21 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
       "WHERE idAuto = ?";
   private static final String SQL_DELETE = "DELETE FROM autos WHERE idAuto = ? ";
   private static final String SQL_GETALL = "SELECT * FROM autos order by patente";
-  private static final String SQL_GETBYID = "SELECT * FROM autos WHERE idAuto";
+  private static final String SQL_GETBYID = "SELECT * FROM autos WHERE idAuto = ?";
   @Override
   public List<Auto> getAll() {
 
     //1-conectar
     conn = AdministradorConexiones.obtenerConexion();
 
-    //2-Crear consulta SQL
-    String sql = "SELECT * FROM autos order by patente";
-
     //3-Crear statment
-    Statement st = null;
     ResultSet rs = null;
 
     List<Auto> listaAutos = new java.util.ArrayList<>();
 
     try {
-      //crear instruccion
-      st = conn.createStatement();
-
-
-      //4-Ejecutar consulta y guarda el resultado en resultset
-      rs = st.executeQuery(sql);
+      PreparedStatement pst = conn.prepareStatement(SQL_GETALL);
+      rs = pst.executeQuery();
 
 
       //5-recorrer el resultset y guarda los autos en una lista
@@ -67,7 +59,7 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
       }
 
       //cerrar el resultset y el statement
-      st.close();
+      pst.close();
       rs.close();
       conn.close();
 
@@ -77,29 +69,17 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
       throw new RuntimeException(e);
     }
 
-
     return listaAutos;
   }
+
 
   @Override
   public void insert(Auto objeto) {
     Auto auto = objeto;
 
     //Establecer la conexion a la BD
-    conn = obtenerConexion();
+    conn = AdministradorConexiones.obtenerConexion();
 
-    //Crear String consulta SQL
-   /* String sql =
-        "INSERT INTO autos (idAuto,patente,color,anio,kilometraje,marca,modelo) " +
-            "VALUES (" + auto.getIdAuto() + "," +
-            "'" + auto.getPatente() + "'," +
-            "'" + auto.getColor() + "'," +
-            +auto.getAnio() + "," +
-            +auto.getKilometraje() + "," +
-            "'" + auto.getMarca() + "'," +
-            "'" + auto.getModelo() + "')";
-*/
-    //paso 3: Crear instrucciones
     PreparedStatement pst = null;
     try {
 
@@ -145,25 +125,20 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
 
     //solo si el auto exite lo modifico
     if (this.existsById(auto.getIdAuto())) {
-
-      String sql = "UPDATE autos SET " +
-          "patente = '" + auto.getPatente() + "', " +
-          "color = '" + auto.getColor() + "', " +
-          "anio = " + auto.getAnio() + ", " +
-          "kilometraje = " + auto.getKilometraje() + ", " +
-          "marca = '" + auto.getMarca() + "', " +
-          "modelo = '" + auto.getModelo() + "' " +
-          "WHERE idAuto = " + auto.getIdAuto();
-      conn = AdministradorConexiones.obtenerConexion();
-
+      conn = this.obtenerConexion();
 
       //Creao un statementn
-      Statement st = null;
 
       try {
-        st = conn.createStatement();
-        st.execute(sql);
-        st.close();
+        PreparedStatement pst = conn.prepareStatement(SQL_UPDATE);
+        pst.setString(1, auto.getPatente());
+        pst.setString(2, auto.getColor());
+        pst.setInt(3, auto.getAnio());
+        pst.setInt(4, auto.getKilometraje());
+        pst.setString(5, auto.getMarca().toString());
+        pst.setString(6, auto.getModelo());
+        pst.setInt(7, auto.getIdAuto());
+        pst.executeUpdate();
         conn.close();
       } catch (SQLException e) {
         System.out.println("Error al crear el statement");
@@ -179,11 +154,12 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
     String sql = "DELETE FROM autos WHERE idAuto = " + id;
     Statement st = null;
 */
+    PreparedStatement pst = null;
     try {
-      PreparedStatement pst = conn.prepareStatement(SQL_DELETE);
-      pst = conn.prepareStatement();
+      pst = conn.prepareStatement(SQL_DELETE);
+      pst.setInt(1, id);
       pst.execute();
-      st.close();
+      pst.close();
       conn.close();
 
     } catch (SQLException e) {
@@ -194,17 +170,16 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
 
   @Override
   public Auto getById(Integer id) {
-    conn = AdministradorConexiones.obtenerConexion();
+    Connection conn = this.obtenerConexion();
 
-    String sql = "SELECT * FROM autos WHERE idAuto = " + id;
+    //String sql = "SELECT * FROM autos WHERE idAuto = " + id;
 
-    Statement st = null;
     ResultSet rs = null;
     Auto auto = new Auto();
-
+    PreparedStatement pst = null;
     try {
-      st = conn.createStatement(); //CREO STATEMENT
-      rs = st.executeQuery(sql);  //EJECUTO CONSULTA
+      pst = conn.prepareStatement(SQL_GETBYID); //CREO STATEMENT
+      rs = pst.executeQuery();  //EJECUTO CONSULTA
       //SI LA CONSULTA DEVUELVE AL MENOS UN REGISTRO, EXISTE
 
       if (rs.next()) {
@@ -220,7 +195,7 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
       }
 
       rs.close();
-      st.close();
+      pst.close();
       conn.close();
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -231,7 +206,7 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
 
   @Override
   public boolean existsById(Integer id) {
-    conn = AdministradorConexiones.obtenerConexion();
+    conn = this.obtenerConexion();
 
     String sql = "SELECT * FROM autos WHERE idAuto = " + id;
 
@@ -254,11 +229,6 @@ public class AutoImpl implements DAO<Auto, Integer>, AdmConexion {
       throw new RuntimeException(e);
     }
     return existe;
-  }
-
-  @Override
-  public Connection obtenerConexion() {
-    return AdmConexion.super.obtenerConexion();
   }
 }
 
