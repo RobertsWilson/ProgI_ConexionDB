@@ -18,7 +18,7 @@ public class App
     public static void main( String[] args ) {
 
         AutoImpl autoimpl = new AutoImpl();
-
+/*
         // === Insertar Autos
         Auto auto1 = new Auto("ABC123", "Rojo", 2020, 25000, Marca.Toyota, "Corolla");
         autoimpl.insert(auto1);
@@ -42,11 +42,25 @@ public class App
         System.out.println("Auto actualizado: " + autoimpl.getById(auto.getIdAuto()));
 
         // === Eliminar un auto
-        autoimpl.delete(auto.getIdAuto());
+        autoimpl.delete(11);
+        autoimpl.delete(12);
+        autoimpl.delete(13);
+        autoimpl.delete(14);
+        autoimpl.delete(15);
+        autoimpl.delete(16);
+        autoimpl.delete(17);
+        autoimpl.delete(18);
+        autoimpl.delete(19);
+        autoimpl.delete(20);
+        autoimpl.delete(21);
+        autoimpl.delete(22);
+
         System.out.println("Después de eliminar, autos en concesionaria:");
-        autos = autoimpl.getAll();
+        List<Auto> autos = autoimpl.getAll();
         for (Auto a : autos) {
             System.out.println(a);
         }
+
+*/
     }
 }

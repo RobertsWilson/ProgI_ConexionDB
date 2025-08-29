@@ -11,7 +11,7 @@ public interface AdmConexion {
     //4 datos de conecion
     String dbDriver = "com.mysql.cj.jdbc.Driver";
     //cadena conexion a mi BD
-    String dbCadenaConexion="jdbc:mysql://localhost:3306/progautos";
+    String dbCadenaConexion="jdbc:mysql://127.0.0.1:3306/progautos";
     //nombre de usuarioBD
     String dbUsuario="root";
     //pass bd
