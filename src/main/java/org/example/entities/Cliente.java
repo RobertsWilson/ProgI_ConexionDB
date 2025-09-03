@@ -7,12 +7,12 @@ public class Cliente implements Comparable {
   private int id;
   private String nombre;
   private String apellido;
-  private int telefono;
+  private String telefono;
 
   public Cliente() {
   }
 
-  public Cliente(int id, String nombre, String apellido, int telefono) {
+  public Cliente(int id, String nombre, String apellido, String telefono) {
     this.id = id;
     this.nombre = nombre;
     this.apellido = apellido;
@@ -43,11 +43,11 @@ public class Cliente implements Comparable {
     this.apellido = apellido;
   }
 
-  public int getTelefono() {
+  public String getTelefono() {
     return telefono;
   }
 
-  public void setTelefono(int telefono) {
+  public void setTelefono(String telefono) {
     this.telefono = telefono;
   }
 

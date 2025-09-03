@@ -6,17 +6,20 @@ public class Seguro implements Comparable {
 
   private int id;
   private String tipo;
-  private int costoMensual;
+  private double costoMensual;
   private String compania;
+
+  private Integer idAuto;
 
   public Seguro() {
   }
 
-  public Seguro(int id, String tipo, int costoMensual, String compania) {
+  public Seguro(int id, String tipo, double costoMensual, String compania, Integer idAuto) {
     this.id = id;
     this.tipo = tipo;
     this.costoMensual = costoMensual;
     this.compania = compania;
+    this.idAuto = idAuto;
   }
 
   public int getId() {
@@ -35,11 +38,11 @@ public class Seguro implements Comparable {
     this.tipo = tipo;
   }
 
-  public int getCostoMensual() {
+  public double getCostoMensual() {
     return costoMensual;
   }
 
-  public void setCostoMensual(int costoMensual) {
+  public void setCostoMensual(double costoMensual) {
     this.costoMensual = costoMensual;
   }
 
@@ -50,6 +53,10 @@ public class Seguro implements Comparable {
   public void setCompania(String compania) {
     this.compania = compania;
   }
+
+  public Integer getIdAuto() { return idAuto; }
+
+  public void setIdAuto(Integer idAuto) { this.idAuto = idAuto; }
 
   @Override
   public boolean equals(Object o) {
