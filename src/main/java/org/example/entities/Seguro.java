@@ -4,30 +4,28 @@ import java.util.Objects;
 
 public class Seguro implements Comparable {
 
-  private int id;
+  private int idSeguros;
   private String tipo;
   private double costoMensual;
-  private String compania;
+  private String compañia;
 
   private Integer idAuto;
 
   public Seguro() {
   }
 
-  public Seguro(int id, String tipo, double costoMensual, String compania, Integer idAuto) {
-    this.id = id;
+  public Seguro(String tipo, double costoMensual, String compania) {
     this.tipo = tipo;
     this.costoMensual = costoMensual;
-    this.compania = compania;
-    this.idAuto = idAuto;
+    this.compañia = compania;
   }
 
-  public int getId() {
-    return id;
+  public int getIdSeguros() {
+    return idSeguros;
   }
 
-  public void setId(int id) {
-    this.id = id;
+  public void setIdSeguros(int idSeguros) {
+    this.idSeguros = idSeguros;
   }
 
   public String getTipo() {
@@ -46,12 +44,12 @@ public class Seguro implements Comparable {
     this.costoMensual = costoMensual;
   }
 
-  public String getCompania() {
-    return compania;
+  public String getCompañia() {
+    return compañia;
   }
 
-  public void setCompania(String compania) {
-    this.compania = compania;
+  public void setCompañia(String compañia) {
+    this.compañia = compañia;
   }
 
   public Integer getIdAuto() { return idAuto; }
@@ -59,16 +57,27 @@ public class Seguro implements Comparable {
   public void setIdAuto(Integer idAuto) { this.idAuto = idAuto; }
 
   @Override
+  public String toString() {
+    return "Seguro{" +
+            "idSeguros=" + idSeguros +
+            ", tipo='" + tipo + '\'' +
+            ", costoMensual=" + costoMensual +
+            ", compañia='" + compañia + '\'' +
+            ", idAuto=" + idAuto +
+            '}';
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Seguro)) return false;
     Seguro seguro = (Seguro) o;
-    return getId() == seguro.getId() && getCostoMensual() == seguro.getCostoMensual() && Objects.equals(getTipo(), seguro.getTipo()) && Objects.equals(getCompania(), seguro.getCompania());
+    return getIdSeguros() == seguro.getIdSeguros() && getCostoMensual() == seguro.getCostoMensual() && Objects.equals(getTipo(), seguro.getTipo()) && Objects.equals(getCompañia(), seguro.getCompañia());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(getId(), getTipo(), getCostoMensual(), getCompania());
+    return Objects.hash(getIdSeguros(), getTipo(), getCostoMensual(), getCompañia());
   }
 
   @Override

@@ -9,110 +9,195 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SeguroDAO implements DAO<Seguro, Integer>, AdmConexion {
-    private Connection conn;
+    private Connection conn = null;
 
-    private static final String SQL_INSERT =
-            "INSERT INTO seguros (tipo, costoMensual, compania, idAuto) VALUES (?,?,?,?)";
+    private static String SQL_INSERT =
+            "INSERT INTO seguros (tipo, costoMensual, compañia) " +
+                    "VALUES (?, ?, ?)";
+    private static String SQL_UPDATE =
+            "UPDATE seguros SET" +
+                    "tipo = ?," +
+                    "costoMensual = ?," +
+                    "compañia = ?" +
+                    "WHERE idSeguro = ?";
+    private static String SQL_DELETE = "DELETE FROM seguros WHERE idSeguro = ?";
+    private static String SQL_GETALL = "SELECT * FROM seguros ORDER BY tipo";
+    private static String SQL_GETBYID = "SELECT * FROM seguros WHERE idSeguro = ?";
+    private static String SQL_EXISTSBYID = "SELECT * FROM seguros WHERE idSeguro = ?";
 
-    private static final String SQL_UPDATE =
-            "UPDATE seguros SET tipo=?, costoMensual=?, compania=?, idAuto=? WHERE idSeguro=?";
-
-    private static final String SQL_DELETE = "DELETE FROM seguros WHERE idSeguro=?";
-    private static final String SQL_GETALL = "SELECT * FROM seguros";
-    private static final String SQL_GETBYID = "SELECT * FROM seguros WHERE idSeguro=?";
 
     @Override
-    public void insert(Seguro seguro) {
+    public List<Seguro> getAll() {
         conn = obtenerConexion();
-        try (PreparedStatement pst = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        List<Seguro> lista = new ArrayList<>();
+
+        try {
+            pst = conn.prepareStatement(SQL_GETALL);
+            rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Seguro seguro = new Seguro();
+                seguro.setIdSeguros(rs.getInt("idSeguro"));
+                seguro.setTipo(rs.getString("tipo"));
+                seguro.setCostoMensual(rs.getDouble("costoMensual"));
+                seguro.setCompañia(rs.getString("compañia"));
+
+                lista.add(seguro);
+            }
+
+            pst.close();
+            rs.close();
+            conn.close();
+        } catch (SQLException e) {
+            System.out.println("Error al crear el statement.");
+            throw new RuntimeException(e);
+        }
+        return lista;
+    }
+
+    @Override
+    public void insert(Seguro objeto) {
+        conn = obtenerConexion();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        Seguro seguro = objeto;
+
+        try {
+            pst = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
+
             pst.setString(1, seguro.getTipo());
             pst.setDouble(2, seguro.getCostoMensual());
-            pst.setString(3, seguro.getCompania());
-            pst.setInt(4, seguro.getIdAuto());
+            pst.setString(3, seguro.getCompañia());
 
-            int res = pst.executeUpdate();
-            if (res == 1) {
-                System.out.println("Seguro insertado correctamente");
-                ResultSet rs = pst.getGeneratedKeys();
-                if (rs.next()) {
-                    seguro.setId(rs.getInt(1));
-                }
+            int resultado = pst.executeUpdate();
+            if (resultado == 1) {
+                System.out.println("Seguro agregado correctamente.");
+            } else {
+                System.out.println("No se pudo agregar el seguro.");
             }
+
+            rs = pst.getGeneratedKeys();
+
+            if (rs.next()) {
+                seguro.setIdSeguros(rs.getInt(1));
+                System.out.println("El id asignado es: " + seguro.getIdSeguros());
+            }
+
+            pst.close();
+            rs.close();
+            conn.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Error insertando seguro", e);
+            throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void update(Seguro seguro) {
+    public void update(Seguro objeto) {
         conn = obtenerConexion();
-        try (PreparedStatement pst = conn.prepareStatement(SQL_UPDATE)) {
-            pst.setString(1, seguro.getTipo());
-            pst.setDouble(2, seguro.getCostoMensual());
-            pst.setString(3, seguro.getCompania());
-            pst.setInt(4, seguro.getIdAuto());
-            pst.setInt(5, seguro.getId());
+        if (this.existsById(objeto.getIdSeguros())) {
+            try {
+                PreparedStatement pst = conn.prepareStatement(SQL_UPDATE);
 
-            pst.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException("Error actualizando seguro", e);
+                pst.setString(1, objeto.getTipo());
+                pst.setDouble(2, objeto.getCostoMensual());
+                pst.setString(3, objeto.getCompañia());
+                pst.setInt(4, objeto.getIdSeguros());
+
+                int resultado = pst.executeUpdate();
+                if (resultado == 1) {
+                    System.out.println("Seguro actualizado correctamente");
+                } else {
+                    System.out.println("No se pudo actualizar el seguro");
+                }
+                pst.close();
+                conn.close();
+            } catch (SQLException e) {
+                System.out.println("Error al crear el statement");
+            }
         }
     }
 
     @Override
     public void delete(Integer id) {
         conn = obtenerConexion();
-        try (PreparedStatement pst = conn.prepareStatement(SQL_DELETE)) {
+        try {
+            PreparedStatement pst = conn.prepareStatement(SQL_DELETE);
             pst.setInt(1, id);
-            pst.executeUpdate();
+            int resultado = pst.executeUpdate();
+
+            if (resultado == 1) {
+                System.out.println("Seguro eliminado correctamente");
+            } else {
+                System.out.println("No se pudo eliminar el seguro");
+            }
+
+            pst.close();
+            conn.close();
         } catch (SQLException e) {
-            throw new RuntimeException("Error eliminando seguro", e);
+            System.out.println("No se pudo eliminar el seguro. Error: " + e.getMessage());
         }
     }
 
     @Override
     public Seguro getById(Integer id) {
         conn = obtenerConexion();
+        PreparedStatement pst = null;
+        ResultSet rs = null;
         Seguro seguro = null;
-        try (PreparedStatement pst = conn.prepareStatement(SQL_GETBYID)) {
-            pst.setInt(1, id);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                seguro = mapSeguro(rs);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Error obteniendo seguro", e);
-        }
-        return seguro;
-    }
 
-    @Override
-    public List<Seguro> getAll() {
-        conn = obtenerConexion();
-        List<Seguro> lista = new ArrayList<>();
-        try (PreparedStatement pst = conn.prepareStatement(SQL_GETALL);
-             ResultSet rs = pst.executeQuery()) {
-            while (rs.next()) {
-                lista.add(mapSeguro(rs));
+        try {
+            pst = conn.prepareStatement(SQL_EXISTSBYID);
+            pst.setInt(1, id);
+            rs = pst.executeQuery(); //ejecuto la consulta
+            //Si la consulta devuelve al menos 1 regristo, existe
+            if (rs.next()) {
+                seguro = new Seguro();
+                seguro.setIdSeguros(rs.getInt("idSeguro"));
+                seguro.setTipo((rs.getString("tipo")));
+                seguro.setCostoMensual(rs.getDouble("costoMensual"));
+                seguro.setCompañia(rs.getString("compañia"));
             }
+
+            pst.close();
+            rs.close();
+            conn.close();
+
         } catch (SQLException e) {
-            throw new RuntimeException("Error listando seguros", e);
+            throw new RuntimeException(e);
         }
-        return lista;
+
+        return seguro;
     }
 
     @Override
     public boolean existsById(Integer id) {
-        return getById(id) != null;
+        conn = obtenerConexion();
+        // Se crea un statement
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        boolean existe = false;
+
+        try {
+            pst = conn.prepareStatement(SQL_GETBYID);
+            pst.setInt(1, id);
+            rs = pst.executeQuery(); // Ejecuto la consulta
+            //Si la consulta devuelve al menos 1 regristo, existe
+            if (rs.next()) {
+                existe = true;
+            }
+
+            rs.close();
+            pst.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return existe;
     }
 
-    private Seguro mapSeguro(ResultSet rs) throws SQLException {
-        Seguro seguro = new Seguro();
-        seguro.setId(rs.getInt("idSeguro"));
-        seguro.setTipo(rs.getString("tipo"));
-        seguro.setCostoMensual(rs.getDouble("costoMensual"));
-        seguro.setCompania(rs.getString("compania"));
-        seguro.setId(rs.getInt("idAuto"));
-        return seguro;
-    }
+
 }

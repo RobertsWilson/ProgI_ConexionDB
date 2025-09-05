@@ -52,6 +52,16 @@ public class Cliente implements Comparable {
   }
 
   @Override
+  public String toString() {
+    return "Cliente{" +
+            "id=" + id +
+            ", nombre='" + nombre + '\'' +
+            ", apellido='" + apellido + '\'' +
+            ", telefono='" + telefono + '\'' +
+            '}';
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (!(o instanceof Cliente)) return false;

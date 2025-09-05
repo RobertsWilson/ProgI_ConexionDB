@@ -3,8 +3,12 @@ package org.example;
 import org.example.configuracion.AdministradorConexiones;
 import org.example.dao.AutoDAO;
 import org.example.dao.AutoImpl;
+import org.example.dao.ClienteDAO;
+import org.example.dao.SeguroDAO;
 import org.example.entities.Auto;
+import org.example.entities.Cliente;
 import org.example.entities.Marca;
+import org.example.entities.Seguro;
 
 import java.sql.Connection;
 import java.util.List;
@@ -16,51 +20,68 @@ import java.util.List;
 public class App 
 {
     public static void main( String[] args ) {
+        AutoImpl autoImpl = new AutoImpl();
 
-        AutoImpl autoimpl = new AutoImpl();
-/*
-        // === Insertar Autos
-        Auto auto1 = new Auto("ABC123", "Rojo", 2020, 25000, Marca.Toyota, "Corolla");
-        autoimpl.insert(auto1);
+        Cliente c1 = new Cliente(15, "Juan", "Perez", "12345678");
+        ClienteDAO clientedao = new ClienteDAO();
+        clientedao.insert(c1);
 
-        // === Lista de autos
-        System.out.println("Lista de autos en la concesionaria:");
-        List<Auto> autos = autoimpl.getAll();
-        for (Auto a : autos) {
-            System.out.println(a);
+        System.out.println("Hello World!");
+        Auto auto =
+                new Auto("CCCCCC", "Blanco", 2025, 897
+                        , Marca.Honda, "Fit", c1);
+        System.out.println(auto.getCliente().toString());
+        /*
+        // guardo en la BD
+        AutoDAO autoDAO = new AutoDAO();
+        AutoImpl autoImpl = new AutoImpl();
+        autoDAO.insertarAuto(auto);
+        // recorro la lista de autos
+        //List<Auto> miLista = autoDAO.findAll();
+        List<Auto> miLista = autoImpl.getAll();
+        if (!miLista.isEmpty()) {
+            for (Auto auto1 : miLista) {
+                System.out.println(auto1.toString());
+            }
         }
+        //modifica auto
+        Auto autoAModificar =
+                new Auto(10, "AABBCC", "Gis", 2024, 897555
+                        , Marca.Honda, "Fit");
 
+        //autoDAO.update(autoAModificar);
+        autoImpl.update(autoAModificar);
+        //autoDAO.delete(14);
 
-        // === Buscar un auto por ID
-        int idBuscado = auto1.getIdAuto(); // recién insertado
-        Auto auto = autoimpl.getById(idBuscado);
-        System.out.println("Auto encontrado con id " + idBuscado + ": " + auto);
+//    System.out.println("Auto encontrado: " + autoDAO.getById(25).toString());
+        System.out.println("Auto encontrado: " + autoImpl.getById(25).toString());
 
-        // === Modificar un auto
-        auto.setColor("Negro");
-        autoimpl.update(auto);
-        System.out.println("Auto actualizado: " + autoimpl.getById(auto.getIdAuto()));
-
-        // === Eliminar un auto
-        autoimpl.delete(11);
-        autoimpl.delete(12);
-        autoimpl.delete(13);
-        autoimpl.delete(14);
-        autoimpl.delete(15);
-        autoimpl.delete(16);
-        autoimpl.delete(17);
-        autoimpl.delete(18);
-        autoimpl.delete(19);
-        autoimpl.delete(20);
-        autoimpl.delete(21);
-        autoimpl.delete(22);
-
-        System.out.println("Después de eliminar, autos en concesionaria:");
-        List<Auto> autos = autoimpl.getAll();
-        for (Auto a : autos) {
-            System.out.println(a);
+        System.out.println("Lista de autos después de la modificación:");
+        // recorro la lista de autos
+        miLista = autoDAO.findAll();
+        if (!miLista.isEmpty()) {
+            for (Auto auto1 : miLista) {
+                System.out.println(auto1.toString());
+            }
         }
+        System.out.println(" ----------AGREGANDO CON DAO IMPL ----------------");
+        Cliente c = new Cliente(15, "Juan", "Perez", "12345678");
+        ClienteDAO clientedao = new ClienteDAO();
+        clientedao.insert(c);
+
+        Auto autoTest =
+                new Auto("CCCCCC", "Blanco", 2025, 0
+                        , Marca.Toyota, "Corolla", c);
+        autoImpl.insert(autoTest);
+
+
+
+        System.out.println("----------AGREGANDO SEGURO CON DAO IMPL ----------------");
+        Seguro s = new Seguro("Todo riesgo", 123450, "Mapfre");
+        SeguroDAO segurodao = new SeguroDAO();
+        segurodao.insert(s);
 
 */
     }
+
 }

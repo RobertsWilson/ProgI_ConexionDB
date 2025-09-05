@@ -13,8 +13,8 @@ public class AutoImpl implements DAO<Auto,Integer>, AdmConexion {
   private Connection conn= null;
 
   private static final String SQL_INSERT=
-      "INSERT INTO autos (patente,color,anio,kilometraje,marca,modelo) " +
-          "VALUES            (      ?,        ?,    ?,   ?,        ?,      ?)";
+      "INSERT INTO autos (patente,color,anio,kilometraje,marca,modelo, idCliente) " +
+          "VALUES            (      ?,        ?,    ?,   ?,        ?,      ?, ?)";
 
 
   private static  final String  SQL_UPDATE= "UPDATE autos SET " +
@@ -83,8 +83,12 @@ public class AutoImpl implements DAO<Auto,Integer>, AdmConexion {
     conn = obtenerConexion();
     // establecer conexion a la base de datos
 
-    // paso 3 crear instruccion
-    PreparedStatement pst = null;
+
+    ClienteDAO clientedao = new ClienteDAO();
+    if (clientedao.existsById(auto.getCliente().getId())){
+      // paso 3 crear instruccion
+      PreparedStatement pst = null;
+
     try {
       // con la conexion llamo al prepareStatement pasandole la consulta SQL
       pst = conn.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
@@ -95,6 +99,7 @@ public class AutoImpl implements DAO<Auto,Integer>, AdmConexion {
       pst.setInt(4,auto.getKilometraje());
       pst.setString(5,auto.getMarca().toString());
       pst.setString(6,auto.getModelo());
+      pst.setInt(7, auto.getCliente().getId());
 
       // paso 4 ejecutar instruccion
       // executeUpdate devuelve 1 si ejecuto correctamente 0 caso contrario
@@ -117,7 +122,7 @@ public class AutoImpl implements DAO<Auto,Integer>, AdmConexion {
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }
-
+    }
 
   }
 

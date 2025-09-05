@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3b046b6-f909-4fd4-ae4a-749f0bbd459d" name="Changes" comment="Conexiones, DAO, Interfaces genericas">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/ClienteDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/SeguroDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/AutoImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/ClienteDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/ClienteDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/dao/SeguroDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/dao/SeguroDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/Auto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/Auto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/Cliente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/Seguro.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/Seguro.java" afterDir="false" />
     </list>
@@ -33,12 +36,12 @@
     &quot;assignee&quot;: &quot;RobertsWilson&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/RobertsWilson/ProgI_ConexionDB.git&quot;,
-    &quot;accountId&quot;: &quot;70df1921-e596-49bd-a664-797ef86baebe&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/RobertsWilson/ProgI_ConexionDB.git",
+    "accountId": "d31bfd59-0b26-4d31-98a0-727f4a0198b7"
   }
-}</component>
+}]]></component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -70,17 +73,6 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\ISP63-3\Desktop\ProyectosW\ProgI_ConexionDB\src\main\java\org\example\entities" />
     </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
